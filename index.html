@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VILGAX</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -22,23 +19,24 @@
 
     body.entered { cursor: default; }
 
-    body::before {
-        content: '';
+    .bg-video {
         position: fixed;
         inset: 0;
-        background: #000;
-        z-index: -1;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.1);
+        filter: blur(8px) brightness(1.1);
+        z-index: -3;
         pointer-events: none;
     }
 
-    body.entered::before {
-        animation: bgStrobe 0.06s steps(1, end) infinite;
-        will-change: background;
-    }
-
-    @keyframes bgStrobe {
-        0%, 49%   { background: #000000; }
-        50%, 100% { background: #ffffff; }
+    .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.55);
+        z-index: -2;
+        pointer-events: none;
     }
 
     .stage {
@@ -52,141 +50,42 @@
         z-index: 1;
     }
 
-    .main-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 3vw;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-        pointer-events: none;
-    }
-
-    body.entered .main-row { opacity: 1; }
-
     h1 {
-        font-family: 'Cinzel', 'Times New Roman', serif;
-        font-size: clamp(3.5rem, 15vw, 18rem);
+        font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+        font-size: clamp(3rem, 15vw, 18rem);
         font-weight: 900;
         letter-spacing: 0.06em;
-        color: #ff0033;
+        color: #000000;
         user-select: none;
         text-align: center;
         line-height: 1;
-        -webkit-text-stroke: 1px #000;
-        paint-order: stroke fill;
         text-shadow:
-            0 0 10px rgba(255, 0, 50, 0.9),
-            0 0 30px rgba(255, 0, 50, 0.6),
-            0 0 60px rgba(255, 0, 50, 0.3),
-            0 0 100px rgba(255, 0, 50, 0.2);
+            0 0 6px rgba(0, 0, 0, 0.55),
+            0 0 16px rgba(0, 0, 0, 0.35),
+            0 0 32px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: opacity 0.8s ease;
     }
 
-    body.entered h1 {
-        animation:
-            brutalGlow 0.09s steps(1, end) infinite,
-            brutalShake 0.08s linear infinite,
-            brutalBounce 0.25s ease-in-out infinite alternate;
-        transform-origin: center center;
-        will-change: text-shadow, translate, scale;
-    }
-
-    @keyframes brutalGlow {
-        0% {
-            text-shadow:
-                0 0 10px rgba(255, 0, 50, 0.9),
-                0 0 30px rgba(255, 0, 50, 0.6),
-                0 0 60px rgba(255, 0, 50, 0.3);
-        }
-        25% {
-            text-shadow:
-                0 0 40px rgba(255, 0, 50, 1),
-                0 0 100px rgba(255, 0, 50, 1),
-                0 0 200px rgba(255, 0, 50, 0.7),
-                0 0 300px rgba(255, 0, 50, 0.4);
-        }
-        50% {
-            text-shadow:
-                0 0 4px rgba(255, 0, 50, 0.4);
-        }
-        75% {
-            text-shadow:
-                0 0 60px rgba(255, 0, 50, 1),
-                0 0 150px rgba(255, 0, 50, 1),
-                0 0 260px rgba(255, 0, 50, 0.6);
-        }
-        100% {
-            text-shadow:
-                0 0 10px rgba(255, 0, 50, 0.9),
-                0 0 30px rgba(255, 0, 50, 0.6),
-                0 0 60px rgba(255, 0, 50, 0.3);
-        }
-    }
-
-    @keyframes brutalShake {
-        0%   { translate: 0 0; }
-        20%  { translate: -4px 3px; }
-        40%  { translate: 4px -3px; }
-        60%  { translate: -3px -4px; }
-        80%  { translate: 3px 4px; }
-        100% { translate: 0 0; }
-    }
-
-    @keyframes brutalBounce {
-        0%   { scale: 1;    translate: 0 0; }
-        100% { scale: 1.08; translate: 0 -10px; }
-    }
-
-    .sigil {
-        width: clamp(70px, 14vw, 200px);
-        height: clamp(70px, 14vw, 200px);
-        flex-shrink: 0;
-        filter: drop-shadow(0 0 12px rgba(255, 0, 50, 0.9))
-                drop-shadow(0 0 28px rgba(255, 0, 50, 0.5));
-    }
-
-    .sigil svg { width: 100%; height: 100%; display: block; }
-
-    .spin-cw  {
-        transform-origin: 100px 100px;
-        animation: spinCW 8s linear infinite;
-        will-change: transform;
-    }
-    .spin-ccw {
-        transform-origin: 100px 100px;
-        animation: spinCCW 6s linear infinite;
-        will-change: transform;
-    }
-
-    @keyframes spinCW {
-        0%   { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    @keyframes spinCCW {
-        0%   { transform: rotate(180deg); }
-        100% { transform: rotate(-180deg); }
-    }
+    body.entered h1 { opacity: 1; }
 
     .enter-hint {
-        font-family: 'Cinzel', 'Times New Roman', serif;
-        font-size: clamp(1.4rem, 3.5vw, 2rem);
-        font-weight: 700;
-        letter-spacing: 0.35em;
-        color: #ff0033;
+        font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+        font-size: clamp(1rem, 2.5vw, 1.4rem);
+        font-weight: 900;
+        letter-spacing: 0.4em;
+        color: #000;
         text-align: center;
         user-select: none;
-        padding-left: 0.35em;
-        -webkit-text-stroke: 0.5px #000;
-        paint-order: stroke fill;
+        padding-left: 0.4em;
         text-shadow:
-            0 0 10px rgba(255, 0, 50, 0.8),
-            0 0 25px rgba(255, 0, 50, 0.4);
+            0 0 6px rgba(0, 0, 0, 0.4),
+            0 0 14px rgba(0, 0, 0, 0.2);
         animation: hintPulse 2.5s ease-in-out infinite;
     }
 
     @keyframes hintPulse {
-        0%, 100% { opacity: 0.5; }
+        0%, 100% { opacity: 0.4; }
         50%      { opacity: 1; }
     }
 
@@ -197,64 +96,41 @@
 </head>
 <body>
 
-    <audio
-        id="track"
-        src="matte.m4a"
+    <video
+        id="bg"
+        class="bg-video"
+        src="bg.mp4"
+        muted
         loop
+        playsinline
+        webkit-playsinline
         preload="auto"
-    ></audio>
+    ></video>
+
+    <div class="overlay"></div>
 
     <div class="stage">
 
-        <div class="main-row">
-
-            <div class="sigil">
-                <svg viewBox="0 0 200 200">
-                    <g class="spin-cw">
-                        <circle cx="100" cy="100" r="92"
-                                fill="none" stroke="#ff0033" stroke-width="1" opacity="0.6"/>
-                        <path d="M 100 20 L 147 165 L 24 75 L 176 75 L 53 165 Z"
-                              fill="none" stroke="#ff0033" stroke-width="2"
-                              stroke-linejoin="miter"/>
-                        <circle cx="100" cy="100" r="4" fill="#ff0033"/>
-                    </g>
-                </svg>
-            </div>
-
-            <h1>VILGAX</h1>
-
-            <div class="sigil">
-                <svg viewBox="0 0 200 200">
-                    <g class="spin-ccw">
-                        <circle cx="100" cy="100" r="92"
-                                fill="none" stroke="#ff0033" stroke-width="1" opacity="0.6"/>
-                        <path d="M 100 20 L 147 165 L 24 75 L 176 75 L 53 165 Z"
-                              fill="none" stroke="#ff0033" stroke-width="2"
-                              stroke-linejoin="miter"/>
-                        <circle cx="100" cy="100" r="4" fill="#ff0033"/>
-                    </g>
-                </svg>
-            </div>
-
-        </div>
-
+        <h1>𝐕𝐈𝐋𝐆𝐀𝐗</h1>
         <div class="enter-hint">CLICK TO ENTER</div>
 
     </div>
 
     <script>
         (function () {
-            var audio = document.getElementById('track');
+            var v = document.getElementById('bg');
             var entered = false;
 
             function enter() {
                 if (entered) return;
                 entered = true;
 
-                audio.volume = 1.0;
-                audio.play().catch(function (e) {
-                    console.log('audio play failed:', e);
-                });
+                v.muted = true;
+                v.volume = 0;
+                var p = v.play();
+                if (p && p.catch) {
+                    p.catch(function (e) { console.log('play failed:', e); });
+                }
 
                 document.body.classList.add('entered');
             }
