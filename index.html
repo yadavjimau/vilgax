@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VILGAX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -11,118 +14,243 @@
         overflow: hidden;
         background: #000;
     }
-    .bg-video {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: scale(1.08);
-        filter: blur(12px) brightness(0.55);
-        z-index: -2;
-        pointer-events: none;
+
+    body {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
     }
-    .overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.35);
-        z-index: -1;
-        pointer-events: none;
-    }
+
+    body.entered { cursor: default; }
+
     .stage {
         position: relative;
         height: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 4rem;
     }
+
+    .main-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3vw;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+    }
+
+    body.entered .main-row { opacity: 1; }
+
     h1 {
-        font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
-        font-size: clamp(2rem, 10vw, 10rem);
-        font-weight: 900;
-        letter-spacing: 0.08em;
-        color: #ffffff;
+        font-family: 'Pirata One', 'Arial Black', serif;
+        font-size: clamp(3rem, 13vw, 15rem);
+        font-weight: 400;
+        letter-spacing: 0.05em;
+        color: #ff0033;
         user-select: none;
         text-align: center;
         line-height: 1;
         text-shadow:
-            0 0 10px rgba(0, 0, 0, 0.7),
-            0 0 30px rgba(0, 0, 0, 0.5),
-            0 0 60px rgba(0, 0, 0, 0.3);
+            0 0 10px rgba(255, 0, 50, 0.9),
+            0 0 30px rgba(255, 0, 50, 0.6),
+            0 0 60px rgba(255, 0, 50, 0.3),
+            0 0 100px rgba(255, 0, 50, 0.2);
+    }
+
+    body.entered h1 {
+        animation:
+            brutalFlash 0.18s steps(1, end) infinite,
+            brutalShake 0.08s linear infinite,
+            brutalBounce 0.25s ease-in-out infinite alternate;
+        transform-origin: center center;
+    }
+
+    /* ---- fast strobe: red → white → red → blackout → red intense ---- */
+    @keyframes brutalFlash {
+        0% {
+            color: #ff0033;
+            text-shadow:
+                0 0 10px rgba(255, 0, 50, 0.9),
+                0 0 30px rgba(255, 0, 50, 0.6),
+                0 0 60px rgba(255, 0, 50, 0.3),
+                0 0 100px rgba(255, 0, 50, 0.2);
+        }
+        20% {
+            color: #ffffff;
+            text-shadow:
+                0 0 15px rgba(255, 255, 255, 1),
+                0 0 40px rgba(255, 255, 255, 0.8),
+                0 0 80px rgba(255, 255, 255, 0.5),
+                0 0 140px rgba(255, 255, 255, 0.3);
+        }
+        40% {
+            color: #ff0033;
+            text-shadow:
+                0 0 10px rgba(255, 0, 50, 0.9),
+                0 0 30px rgba(255, 0, 50, 0.6),
+                0 0 60px rgba(255, 0, 50, 0.3),
+                0 0 100px rgba(255, 0, 50, 0.2);
+        }
+        60% {
+            color: #000000;
+            text-shadow: none;
+        }
+        80% {
+            color: #ff0033;
+            text-shadow:
+                0 0 20px rgba(255, 0, 50, 1),
+                0 0 50px rgba(255, 0, 50, 0.8),
+                0 0 100px rgba(255, 0, 50, 0.5),
+                0 0 160px rgba(255, 0, 50, 0.3);
+        }
+        100% {
+            color: #ff0033;
+            text-shadow:
+                0 0 10px rgba(255, 0, 50, 0.9),
+                0 0 30px rgba(255, 0, 50, 0.6),
+                0 0 60px rgba(255, 0, 50, 0.3),
+                0 0 100px rgba(255, 0, 50, 0.2);
+        }
+    }
+
+    /* ---- violent shake: small random pixel jitter ---- */
+    @keyframes brutalShake {
+        0%   { translate: 0 0; }
+        20%  { translate: -4px 3px; }
+        40%  { translate: 4px -3px; }
+        60%  { translate: -3px -4px; }
+        80%  { translate: 3px 4px; }
+        100% { translate: 0 0; }
+    }
+
+    /* ---- bounce: scale up/down + vertical hop ---- */
+    @keyframes brutalBounce {
+        0% {
+            scale: 1;
+            translate: 0 0;
+        }
+        100% {
+            scale: 1.08;
+            translate: 0 -10px;
+        }
+    }
+
+    .sigil {
+        width: clamp(70px, 14vw, 200px);
+        height: clamp(70px, 14vw, 200px);
+        flex-shrink: 0;
+        filter: drop-shadow(0 0 12px rgba(255, 0, 50, 0.8))
+                drop-shadow(0 0 25px rgba(255, 0, 50, 0.4));
+    }
+
+    .sigil svg { width: 100%; height: 100%; display: block; }
+
+    .spin-slow    { transform-origin: 100px 100px; animation: spin 50s linear infinite; }
+    .spin-reverse { transform-origin: 100px 100px; animation: spin 40s linear infinite reverse; }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+    }
+
+    .enter-hint {
+        font-family: 'Pirata One', 'Arial Black', serif;
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        letter-spacing: 0.4em;
+        color: #ff0033;
+        text-align: center;
+        user-select: none;
+        padding-left: 0.4em;
+        text-shadow:
+            0 0 10px rgba(255, 0, 50, 0.8),
+            0 0 25px rgba(255, 0, 50, 0.4);
+        animation: pulse 2.5s ease-in-out infinite;
+        transition: opacity 0.6s ease;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.5; }
+        50%      { opacity: 1; }
+    }
+
+    body.entered .enter-hint {
+        opacity: 0;
+        pointer-events: none;
     }
 </style>
 </head>
 <body>
 
-    <video
-        id="bg"
-        class="bg-video"
-        autoplay
-        muted
+    <audio
+        id="track"
+        src="matte.m4a"
         loop
-        playsinline
-        webkit-playsinline
         preload="auto"
-        disablepictureinpicture
-        x5-playsinline
-    >
-        <source src="bg.mp4" type="video/mp4">
-    </video>
-
-    <div class="overlay"></div>
+    ></audio>
 
     <div class="stage">
-        <h1>𝐕𝐈𝐋𝐆𝐀𝐗</h1>
+
+        <div class="main-row">
+
+            <div class="sigil">
+                <svg viewBox="0 0 200 200">
+                    <g class="spin-slow">
+                        <circle cx="100" cy="100" r="92"
+                                fill="none" stroke="#ff0033" stroke-width="1" opacity="0.6"/>
+                        <path d="M 100 20 L 147 165 L 24 75 L 176 75 L 53 165 Z"
+                              fill="none" stroke="#ff0033" stroke-width="2"
+                              stroke-linejoin="miter"/>
+                        <circle cx="100" cy="100" r="4" fill="#ff0033"/>
+                    </g>
+                </svg>
+            </div>
+
+            <h1>VILGAX</h1>
+
+            <div class="sigil">
+                <svg viewBox="0 0 200 200">
+                    <g class="spin-reverse">
+                        <circle cx="100" cy="100" r="92"
+                                fill="none" stroke="#ff0033" stroke-width="1" opacity="0.6"/>
+                        <path d="M 100 20 L 147 165 L 24 75 L 176 75 L 53 165 Z"
+                              fill="none" stroke="#ff0033" stroke-width="2"
+                              stroke-linejoin="miter"/>
+                        <circle cx="100" cy="100" r="4" fill="#ff0033"/>
+                    </g>
+                </svg>
+            </div>
+
+        </div>
+
+        <div class="enter-hint">CLICK TO ENTER</div>
+
     </div>
 
     <script>
         (function () {
-            var v = document.getElementById('bg');
-            if (!v) return;
+            var audio = document.getElementById('track');
+            var entered = false;
 
-            // force every attribute that matters
-            v.muted = true;
-            v.defaultMuted = true;
-            v.volume = 0;
-            v.setAttribute('muted', '');
-            v.setAttribute('playsinline', '');
-            v.setAttribute('webkit-playsinline', '');
-            v.autoplay = true;
-            v.loop = true;
+            function enter() {
+                if (entered) return;
+                entered = true;
 
-            function kick() {
-                // skip black intro frames if any
-                try {
-                    if (v.currentTime < 0.5) v.currentTime = 1.0;
-                } catch (e) {}
+                audio.volume = 1.0;
+                audio.play().catch(function (e) {
+                    console.log('audio play failed:', e);
+                });
 
-                var p = v.play();
-                if (p && p.catch) {
-                    p.catch(function (err) {
-                        console.log('[bg] play blocked:', err && err.name);
-                    });
-                }
+                document.body.classList.add('entered');
             }
 
-            if (v.readyState >= 2) {
-                kick();
-            } else {
-                v.addEventListener('loadeddata', kick, { once: true });
-                v.addEventListener('canplay', kick, { once: true });
-            }
-
-            // last resort — any user touch on page starts the video
-            var unlock = function () {
-                kick();
-                document.removeEventListener('touchstart', unlock);
-                document.removeEventListener('click', unlock);
-                document.removeEventListener('scroll', unlock);
-                document.removeEventListener('touchend', unlock);
-            };
-            document.addEventListener('touchstart', unlock, { passive: true });
-            document.addEventListener('touchend', unlock, { passive: true });
-            document.addEventListener('click', unlock);
-            document.addEventListener('scroll', unlock, { passive: true });
+            document.addEventListener('click', enter);
+            document.addEventListener('touchend', enter, { passive: true });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === ' ' || e.key === 'Enter') enter();
+            });
         })();
     </script>
 
