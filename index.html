@@ -6,7 +6,7 @@
 <title>VILGAX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -32,12 +32,13 @@
     }
 
     body.entered::before {
-        animation: bgStrobe 0.14s steps(1, end) infinite;
+        animation: bgStrobe 0.06s steps(1, end) infinite;
+        will-change: background;
     }
 
     @keyframes bgStrobe {
-        0%, 49%   { background: #000; }
-        50%, 100% { background: #fff; }
+        0%, 49%   { background: #000000; }
+        50%, 100% { background: #ffffff; }
     }
 
     .stage {
@@ -64,10 +65,10 @@
     body.entered .main-row { opacity: 1; }
 
     h1 {
-        font-family: 'UnifrakturCook', 'UnifrakturMaguntia', 'Pirata One', serif;
+        font-family: 'Cinzel', 'Times New Roman', serif;
         font-size: clamp(3.5rem, 15vw, 18rem);
-        font-weight: 700;
-        letter-spacing: 0.02em;
+        font-weight: 900;
+        letter-spacing: 0.06em;
         color: #ff0033;
         user-select: none;
         text-align: center;
@@ -87,6 +88,7 @@
             brutalShake 0.08s linear infinite,
             brutalBounce 0.25s ease-in-out infinite alternate;
         transform-origin: center center;
+        will-change: text-shadow, translate, scale;
     }
 
     @keyframes brutalGlow {
@@ -145,8 +147,16 @@
 
     .sigil svg { width: 100%; height: 100%; display: block; }
 
-    .spin-cw  { transform-origin: 100px 100px; animation: spinCW  55s linear infinite; }
-    .spin-ccw { transform-origin: 100px 100px; animation: spinCCW 42s linear infinite; }
+    .spin-cw  {
+        transform-origin: 100px 100px;
+        animation: spinCW 8s linear infinite;
+        will-change: transform;
+    }
+    .spin-ccw {
+        transform-origin: 100px 100px;
+        animation: spinCCW 6s linear infinite;
+        will-change: transform;
+    }
 
     @keyframes spinCW {
         0%   { transform: rotate(0deg); }
@@ -159,14 +169,14 @@
     }
 
     .enter-hint {
-        font-family: 'UnifrakturCook', 'UnifrakturMaguntia', serif;
+        font-family: 'Cinzel', 'Times New Roman', serif;
         font-size: clamp(1.4rem, 3.5vw, 2rem);
         font-weight: 700;
-        letter-spacing: 0.25em;
+        letter-spacing: 0.35em;
         color: #ff0033;
         text-align: center;
         user-select: none;
-        padding-left: 0.25em;
+        padding-left: 0.35em;
         -webkit-text-stroke: 0.5px #000;
         paint-order: stroke fill;
         text-shadow:
