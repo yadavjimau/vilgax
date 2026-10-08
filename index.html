@@ -8,32 +8,72 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
         height: 100%;
-        background: #ffffff;
         overflow: hidden;
+        background: #000;
     }
-    body {
+
+    /* full-screen video, blurred, behind everything */
+    .bg-video {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* slight scale stops blur from showing soft edges */
+        transform: scale(1.08);
+        filter: blur(12px) brightness(0.55);
+        z-index: -2;
+    }
+
+    /* optional dark tint so text pops even more */
+    .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: -1;
+    }
+
+    .stage {
+        position: relative;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
     }
+
     h1 {
+        font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
         font-size: clamp(2rem, 10vw, 10rem);
         font-weight: 900;
         letter-spacing: 0.08em;
-        color: #000000;
+        color: #ffffff;
         user-select: none;
         text-align: center;
         line-height: 1;
         text-shadow:
-            0 0 10px rgba(0, 0, 0, 0.6),
-            0 0 25px rgba(0, 0, 0, 0.4),
-            0 0 50px rgba(0, 0, 0, 0.25),
-            0 0 80px rgba(0, 0, 0, 0.15);
+            0 0 10px rgba(0, 0, 0, 0.7),
+            0 0 30px rgba(0, 0, 0, 0.5),
+            0 0 60px rgba(0, 0, 0, 0.3);
     }
 </style>
 </head>
 <body>
-    <h1>𝐕𝐈𝐋𝐆𝐀𝐗</h1>
+
+    <video
+        class="bg-video"
+        src="bg.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+    ></video>
+
+    <div class="overlay"></div>
+
+    <div class="stage">
+        <h1>𝐕𝐈𝐋𝐆𝐀𝐗</h1>
+    </div>
+
 </body>
-</html>
+   </html>
